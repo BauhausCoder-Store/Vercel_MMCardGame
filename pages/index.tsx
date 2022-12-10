@@ -3,6 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import Monster_1 from '../public/graphics/pics/monster_group/monster_1.svg';
@@ -17,6 +18,9 @@ import Monster_9 from '../public/graphics/pics/monster_group/monster_9.svg';
 import Monster_10 from '../public/graphics/pics/monster_group/monster_10.svg';
 import Monster_11 from '../public/graphics/pics/monster_group/monster_11.svg';
 import Monster_12 from '../public/graphics/pics/monster_group/monster_12.svg';
+
+import GithubSVG from '../public/graphics/logos/github-original.svg';
+
 
 const Home: NextPage = () => {
   
@@ -166,6 +170,11 @@ const Home: NextPage = () => {
           </div>
         </section>
 
+        <div className={styles.github_div}>
+          <Link target='_blank' href='https://github.com/wkddevelopment/Vercel_MMCardGame'>
+            <Image src={GithubSVG} className={styles.github_svg} width='1' height='1' alt='Github Logo with Link to APP-Repository' title='To Github-Repository..'></Image>
+          </Link>
+        </div>
 
       </>
   ) 

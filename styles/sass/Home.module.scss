@@ -82,3 +82,20 @@
         box-shadow: 0 0 1.5rem green;
     }
 }
+
+.github_div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1rem;
+    aspect-ratio: 1/1;
+    z-index: 1;
+    filter: invert(99%) sepia(10%) saturate(114%) hue-rotate(193deg) brightness(115%) contrast(100%);
+    transition: all 1s;
+}
+
+.github_div:hover {
+    transform: scale(2);
+    left: 1rem;
+    top: 1rem;
+}
