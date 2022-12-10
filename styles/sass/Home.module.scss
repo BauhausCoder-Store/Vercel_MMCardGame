@@ -1,0 +1,84 @@
+@import './ColorsAndDesign.scss';
+
+.home_title_div {
+    display: flex;
+    flex-direction: column;
+    max-width: 75vw;
+
+    > .home_title_h1 {
+        color: $wkd-green;
+        font-size: 3vw;
+        margin-top: 0;
+    };
+
+    > .home_title_p {
+        color: $wkd-white;
+        font-size: 2vw;
+        margin-left: 20px;
+        padding-inline: 10px;
+        padding-top: 0px;
+    };
+
+};
+
+.scoreboard_section {
+    position: absolute;
+    top: 6px;
+    right: 5px;
+    display: flex;
+    flex-direction: column;
+    line-height: .3vh;
+    color: white;
+
+    > div {
+        display: flex;
+        text-align: right;
+        align-items: center;
+        justify-content: flex-end;
+        gap: .5vw;
+        font-weight: bold;
+        font-size: 1.5vw;
+    }
+}
+
+.gameboard_section {
+    height: calc(100vh / 4 * 3);
+    padding-top: 3vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    text-align: center;
+
+    > .monster_card {
+        display: flex;
+        flex-direction: column;
+        width: calc(100vw / 7);
+        aspect-ratio: 3/4;
+        outline: solid .3rem $wkd-green;
+        border-radius: 15px;
+        margin: 10px;
+        color: white;
+        font-size: 23px;
+        text-align: center;
+
+    > .monster_image {
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 15px;
+        height: 75%;
+        aspect-ratio: 1/1;
+        pointer-events: none;
+    }   
+    
+    > h3 {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        pointer-events: none;
+    }
+
+    }   
+
+    .monster_card:hover{
+        box-shadow: 0 0 1.5rem green;
+    }
+}
