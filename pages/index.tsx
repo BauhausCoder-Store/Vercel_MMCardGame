@@ -45,6 +45,34 @@ const Home: NextPage = () => {
           setActualScore(0);
   };
 
+function alterCoverElement(correctGuess: string ) {
+
+  let timeout;
+  //? Set back timeout durance
+  clearTimeout(timeout);
+
+  let elem1: HTMLElement | any = document.querySelector('#scoreboard_actual');
+  let elem2: HTMLElement | any = document.querySelector('#actualScore');
+ 
+  correctGuess === "yes" ? 
+    elem1.style.color = "green" :
+    elem1.style.color = "red";
+
+  correctGuess === "yes" ? 
+    elem2.style.color = "green" :
+    elem2.style.color = "red";
+
+    if (!timeout) {
+        setTimeout(()=>{ resetFlash() }, 2000);
+    };
+
+    function resetFlash() {
+      elem1.style.color = "white";
+      elem2.style.color = "white";
+    };
+
+};
+
   const onCardClick = (e:any) => {
     e.preventDefault();
 
@@ -55,8 +83,15 @@ const Home: NextPage = () => {
     
     // Count actualScore or set actualScore to 0, validate for best score,      
     if(e.target.getAttribute('data-clicked') == 'yes'){
+
+      // show green font for 2s to signal player correct guess  
+      alterCoverElement('yes');
+
       setActualScore(actualScore + 1);
     } else {
+      
+      // show red font for 2s to signal player correct guess  
+      alterCoverElement('no');
 
       if(actualScore > bestScore){
         setBestScore(actualScore);
@@ -69,9 +104,6 @@ const Home: NextPage = () => {
 
     };
 
-    // Mix cards after click
-
-
   };
 
   // Game Won
@@ -79,7 +111,6 @@ const Home: NextPage = () => {
     setBestScore(12)
     resetCounter()
   };
-  
 
   return (
       <>
@@ -97,8 +128,8 @@ const Home: NextPage = () => {
         {/* Scoreboard */}
         <section className={styles.scoreboard_section}>
           <div>
-            <h2 className={styles.scoreboard_actual}>{home_scoreboard_actual_h2}</h2>
-            <p>{actualScore}</p>
+            <h2 className={styles.scoreboard_actual} id='scoreboard_actual'>{home_scoreboard_actual_h2}</h2>
+            <p id='actualScore'>{actualScore}</p>
           </div>
           <div>
           <h2 className={styles.scoreboard_best}>{home_scoreboard_best_h2}</h2>
