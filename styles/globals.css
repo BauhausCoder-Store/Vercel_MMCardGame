@@ -7,6 +7,7 @@
 /*? === text === */
 /* futura: font-family: futura-pt,sans-serif; */
 @import url("https://use.typekit.net/izw3hmc.css");
+/*#region Resets */
 html,
 .page-container {
   padding: 0;
@@ -76,8 +77,12 @@ select {
     scroll-behavior: auto !important;
   }
 }
+body {
+  background-color: #b2b6a0;
+}
+
+/*#endregion */
 .app-container {
-  min-height: 110vh;
   color: black;
   background-color: #b2b6a0;
   overflow-wrap: break-word;
@@ -85,7 +90,11 @@ select {
   font-style: normal;
   font-family: futura-pt, sans-serif;
   padding: 1rem;
-  display: block;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 /*# sourceMappingURL=globals.css.map */

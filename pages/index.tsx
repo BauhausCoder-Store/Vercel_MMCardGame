@@ -16,8 +16,6 @@ import Monster_7 from '../public/graphics/pics/monster_group/monster_7.svg';
 import Monster_8 from '../public/graphics/pics/monster_group/monster_8.svg';
 import Monster_9 from '../public/graphics/pics/monster_group/monster_9.svg';
 import Monster_10 from '../public/graphics/pics/monster_group/monster_10.svg';
-import Monster_11 from '../public/graphics/pics/monster_group/monster_11.svg';
-import Monster_12 from '../public/graphics/pics/monster_group/monster_12.svg';
 
 import GithubSVG from '../public/graphics/logos/github-original.svg';
 
@@ -36,44 +34,80 @@ const Home: NextPage = () => {
   const [bestScore, setBestScore] = useState(0);
 
   function resetCounter(){
-          // reset 'clicked' attribute 
-          const all_cards = document.querySelectorAll('#monster_card_id');
-          for (let index = 0; index < all_cards.length; index++) {
-            const card = all_cards[index];
-            card.setAttribute('data-clicked', 'no');
-          };
-          setActualScore(0);
-  };
 
-function alterCoverElement(correctGuess: string ) {
+    // reset 'clicked' attribute 
+    const all_cards: NodeListOf<Element> = document.querySelectorAll('#monster_card_id');
 
-  let timeout;
-  //? Set back timeout durance
-  clearTimeout(timeout);
+    for (let index = 0; index < all_cards.length; index++) {
 
-  let elem1: HTMLElement | any = document.querySelector('#scoreboard_actual');
-  let elem2: HTMLElement | any = document.querySelector('#actualScore');
- 
-  correctGuess === "yes" ? 
-    elem1.style.color = "green" :
-    elem1.style.color = "red";
+      const card = all_cards[index];
+      card.setAttribute('data-clicked', 'no');
 
-  correctGuess === "yes" ? 
-    elem2.style.color = "green" :
-    elem2.style.color = "red";
-
-    if (!timeout) {
-        setTimeout(()=>{ resetFlash() }, 2000);
     };
 
-    function resetFlash() {
-      elem1.style.color = "white";
-      elem2.style.color = "white";
-    };
+    setActualScore(0);
 
 };
 
+  function alterScoreboardElements(correctGuess: number, bestCore: number ) {
+
+    let timeout;
+    //? clear timeout to not commulate durance
+    clearTimeout(timeout);
+
+    let scoreboard_font_el: HTMLElement | any = document.querySelector('#scoreboard_actual');
+    let scoreboard_score_el: HTMLElement | any = document.querySelector('#actualScore');
+    let bestScore_font_el: HTMLElement | any = document.querySelector('#scoreboard_best');
+    let bestScore_score_el: HTMLElement | any = document.querySelector('#bestScore');
+    
+    /*? signal colors loop:
+      1) alterScoreboardElements(1, 0); => signal: green actual score
+      2) alterScoreboardElements(1, 1); => signal: green actual score, green best score
+      3) alterScoreboardElements(0, 0);=> signal:  red actual score, red best score
+    */
+
+    if(correctGuess === 1){ // 1) alterScoreboardElements(1, 0); => signal: green actual score
+
+      scoreboard_font_el.style.color = "green";
+      scoreboard_score_el.style.color = "green";
+
+      if(bestCore === 1){ // 2) alterScoreboardElements(1, 1); => signal: green actual score, green best score
+
+        bestScore_font_el.style.color = "green";
+        bestScore_score_el.style.color = "green";
+      
+      };
+
+    };
+
+    if(correctGuess === 0 && bestCore === 0){ // 3) alterScoreboardElements(0, 0);=> signal:  red actual score, red best score
+
+      scoreboard_font_el.style.color = "red";
+      scoreboard_score_el.style.color = "red";
+      bestScore_font_el.style.color = "red";
+      bestScore_score_el.style.color = "red";
+
+    }
+
+    if ( !timeout ) {
+
+        setTimeout(()=>{ resetScoreSignals() }, 2000);
+
+    };
+
+    function resetScoreSignals() {
+
+      scoreboard_font_el.style.color = "white";
+      scoreboard_score_el.style.color = "white";
+      bestScore_font_el.style.color = "white";
+      bestScore_score_el.style.color = "white";
+
+    };
+
+  };
+
   const onCardClick = (e:any) => {
+
     e.preventDefault();
 
     // Toggle card clicked attribute
@@ -81,32 +115,41 @@ function alterCoverElement(correctGuess: string ) {
     ? e.target.setAttribute('data-clicked', 'yes')
     : e.target.setAttribute('data-clicked', 'no');
     
-    // Count actualScore or set actualScore to 0, validate for best score,      
-    if(e.target.getAttribute('data-clicked') == 'yes'){
+          
+    if(e.target.getAttribute('data-clicked') == 'yes'){ // if player is correct, show signal & increase actualScore
 
       // show green font for 2s to signal player correct guess  
-      alterCoverElement('yes');
-
+      alterScoreboardElements(1, 0);
+      // set score
       setActualScore(actualScore + 1);
-    } else {
-      
-      // show red font for 2s to signal player correct guess  
-      alterCoverElement('no');
 
-      if(actualScore > bestScore){
+    } else { // if player fails, show signal, evaluate for best score & reset counter
+      
+      if(actualScore > bestScore){ // evaluate for best score
+        
+        // if new best score show green font signal 
+        alterScoreboardElements(1, 1);
+        // set new best score
         setBestScore(actualScore);
+        // reset actual score counter
         setActualScore(0);
-      } else {
+
+      } else { // if no new best score show signal & reset actual score counter
+
+        // show no best score show red font signal 
+        alterScoreboardElements(0, 0);
+        // reset 
         setActualScore(0);
+
       };
 
-      resetCounter();
+      resetCounter();//!
 
     };
 
   };
 
-  // Game Won
+  // game won loop
   if(actualScore === 12){
     setBestScore(12)
     resetCounter()
@@ -132,8 +175,8 @@ function alterCoverElement(correctGuess: string ) {
             <p id='actualScore'>{actualScore}</p>
           </div>
           <div>
-          <h2 className={styles.scoreboard_best}>{home_scoreboard_best_h2}</h2>
-          <p>{bestScore}</p>
+          <h2 className={styles.scoreboard_best} id='scoreboard_best'>{home_scoreboard_best_h2}</h2>
+          <p id='bestScore'>{bestScore}</p>
           </div>
         </section>
 
@@ -190,15 +233,6 @@ function alterCoverElement(correctGuess: string ) {
             <h3>Pace</h3>
           </div>
 
-          <div className={styles.monster_card} id='monster_card_id' data-clicked='no' onClick={onCardClick}>
-            <Image src={Monster_11} alt={home_monster_alt} className={styles.monster_image}></Image>
-            <h3>Raquel</h3>
-          </div>
-
-          <div className={styles.monster_card} id='monster_card_id' data-clicked='no' onClick={onCardClick}>
-            <Image src={Monster_12} alt={home_monster_alt} className={styles.monster_image}></Image>
-            <h3>Genevieve </h3>
-          </div>
         </section>
 
         <div className={styles.github_div}>
