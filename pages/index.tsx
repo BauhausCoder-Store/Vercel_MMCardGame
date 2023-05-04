@@ -29,28 +29,24 @@ const Home: NextPage = () => {
   const home_scoreboard_actual_h2= t('home_scoreboard_actual_h2');
   const home_scoreboard_best_h2 = t('home_scoreboard_best_h2');
   const home_monster_alt = t('home_monster_alt');
+  const home_to_repo = t('home_to_repo');
 
   const [actualScore, setActualScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
 
   function resetCounter(){
-
     // reset 'clicked' attribute 
     const all_cards: NodeListOf<Element> = document.querySelectorAll('#monster_card_id');
 
     for (let index = 0; index < all_cards.length; index++) {
-
       const card = all_cards[index];
       card.setAttribute('data-clicked', 'no');
-
     };
 
     setActualScore(0);
-
 };
 
   function alterScoreboardElements(correctGuess: number, bestCore: number ) {
-
     let timeout;
     //? clear timeout to not commulate durance
     clearTimeout(timeout);
@@ -67,86 +63,63 @@ const Home: NextPage = () => {
     */
 
     if(correctGuess === 1){ // 1) alterScoreboardElements(1, 0); => signal: green actual score
-
       scoreboard_font_el.style.color = "green";
       scoreboard_score_el.style.color = "green";
-
       if(bestCore === 1){ // 2) alterScoreboardElements(1, 1); => signal: green actual score, green best score
-
         bestScore_font_el.style.color = "green";
-        bestScore_score_el.style.color = "green";
-      
+        bestScore_score_el.style.color = "green";     
       };
-
     };
 
     if(correctGuess === 0 && bestCore === 0){ // 3) alterScoreboardElements(0, 0);=> signal:  red actual score, red best score
-
       scoreboard_font_el.style.color = "red";
       scoreboard_score_el.style.color = "red";
       bestScore_font_el.style.color = "red";
       bestScore_score_el.style.color = "red";
-
     }
 
     if ( !timeout ) {
-
         setTimeout(()=>{ resetScoreSignals() }, 2000);
-
     };
 
     function resetScoreSignals() {
-
       scoreboard_font_el.style.color = "white";
       scoreboard_score_el.style.color = "white";
       bestScore_font_el.style.color = "white";
       bestScore_score_el.style.color = "white";
-
     };
-
   };
 
   const onCardClick = (e:any) => {
-
     e.preventDefault();
 
     // Toggle card clicked attribute
     e.target.getAttribute('data-clicked') === 'no'
     ? e.target.setAttribute('data-clicked', 'yes')
     : e.target.setAttribute('data-clicked', 'no');
-    
           
     if(e.target.getAttribute('data-clicked') == 'yes'){ // if player is correct, show signal & increase actualScore
-
       // show green font for 2s to signal player correct guess  
       alterScoreboardElements(1, 0);
       // set score
       setActualScore(actualScore + 1);
-
-    } else { // if player fails, show signal, evaluate for best score & reset counter
+    } else { // if player fails, show signal, evaluate for best score & reset counter   
       
-      if(actualScore > bestScore){ // evaluate for best score
-        
+      if(actualScore > bestScore){ // evaluate for best score   
         // if new best score show green font signal 
         alterScoreboardElements(1, 1);
         // set new best score
         setBestScore(actualScore);
         // reset actual score counter
         setActualScore(0);
-
       } else { // if no new best score show signal & reset actual score counter
-
         // show no best score show red font signal 
         alterScoreboardElements(0, 0);
         // reset 
         setActualScore(0);
-
       };
-
-      resetCounter();//!
-
+      resetCounter();
     };
-
   };
 
   // game won loop
@@ -156,8 +129,7 @@ const Home: NextPage = () => {
   };
 
   return (
-      <>
-         
+      <>     
         <Head>
           <title>{app_title}</title>
         </Head>
@@ -237,13 +209,12 @@ const Home: NextPage = () => {
 
         <div className={styles.github_div}>
           <Link target='_blank' href='https://github.com/wkddevelopment/Vercel_MMCardGame'>
-            <Image src={GithubSVG} className={styles.github_svg} width='1' height='1' alt='Github Logo with Link to APP-Repository' title='To Github-Repository..'></Image>
+            <Image src={GithubSVG} className={styles.github_svg} width='1' height='1' alt='Github Logo with Link to APP-Repository' title={home_to_repo}></Image>
+            <p className={styles.to_repo}>to repo</p>
           </Link>
         </div>
-
       </>
   ) 
-
 };
 
 export default Home
